@@ -4,6 +4,7 @@ High performance is achieved by using Focal loss and using Convolutional Neural 
 These techniques are helpful in this problem because of high proportion of anchors not containing any digits and the fact that the task is translation-independent. 
 
 ## Anchor boxes selection
+![image](https://user-images.githubusercontent.com/70006947/150699596-fba36725-ddf6-4790-85fb-a0f2b1003623.png)
 
 Based on the heatmap of box sizes in the dataset I concluded that a small set of 11 anchors will do sufficiently good. At first I used more anchors but it seems that enlarging the set does not improve performance by much and slows down learning process.
 
@@ -20,21 +21,19 @@ After noticing how time-consuming target creation was, I decided to create a fin
 Training took less than two hours on a laptop PC utilising a GeForce GTX 1650Ti GPU.
 
 ## Getting predictions from model output
-Score - model confidence
+### Score - model confidence
 
 To order model predictions from best to worst I compute a score for each of the anchors.
 
-Let
-be an anchor. Let be the model's output predicting the digit for anchor and the model's output predicting the rotation (all before softmax). I set score of anchor to be
-Maximal possible score would thus be
+Let ![image](https://user-images.githubusercontent.com/70006947/150699695-4c5c97c8-fb83-4e75-b5e9-ab8d4e88a6db.png) be an anchor. Let ![image](https://user-images.githubusercontent.com/70006947/150699676-117ae403-19c6-41bb-b388-626ba760b780.png) be the model's output predicting the digit for anchor ![image](https://user-images.githubusercontent.com/70006947/150699695-4c5c97c8-fb83-4e75-b5e9-ab8d4e88a6db.png) and ![image](https://user-images.githubusercontent.com/70006947/150699731-25896d67-12e6-4ea4-89c5-50bb555c40a3.png) the model's output predicting the rotation (all before softmax). I set score of anchor ![image](https://user-images.githubusercontent.com/70006947/150699695-4c5c97c8-fb83-4e75-b5e9-ab8d4e88a6db.png) to be
 
-.
-## Algorithm
+![image](https://user-images.githubusercontent.com/70006947/150699754-1a0e396c-e3bd-4d3b-985a-89fa7e95a2f1.png)
 
-I started out with a simple algorithm for selecting final predictions - I would not allow any overlapping rectangles and always take the six most confident (highest score) predictions. I also rejected any malformed anchors (e. g.
-or
+Maximal possible score would thus be 2.
 
-). This turned out not to give good enough results because the images do not always contain six numbers and can overlap. Still, this was a good starting point.
+### Algorithm
+
+I started out with a simple algorithm for selecting final predictions - I would not allow any overlapping rectangles and always take the six most confident (highest score) predictions. I also rejected any malformed anchors (e. g. ![image](https://user-images.githubusercontent.com/70006947/150699806-c76eaf54-90c3-43ec-ad29-6a453f386018.png) or ![image](https://user-images.githubusercontent.com/70006947/150699818-415326e3-8a70-4309-8f8c-6bdde4b1b657.png) This turned out not to give good enough results because the images do not always contain six numbers and can overlap. Still, this was a good starting point.
 
 After that I set the maximum IOU overlap to 0.1. It helped my net a little bit, but I was still losing a lot of accuracy on examples with less than 6 images.
 
