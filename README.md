@@ -2,7 +2,10 @@
 Detect multiple rotated and overlapping digits with bounding boxes by implementing RetinaNet variant.
 High performance is achieved by using Focal loss and using Convolutional Neural Nets. 
 These techniques are helpful in this problem because of high proportion of anchors not containing any digits and the fact that the task is translation-independent.
+
+
 ![image](https://user-images.githubusercontent.com/70006947/150699924-41f8656c-14c9-4321-810c-468a62b3cb4e.png)
+
 
 ## Anchor boxes selection
 ![image](https://user-images.githubusercontent.com/70006947/150699596-fba36725-ddf6-4790-85fb-a0f2b1003623.png)
